@@ -32,8 +32,6 @@ type User struct {
     HTMLURL string `json:"html_url"`
 }
 
-
-
 // SearchIssues queries the GitHub issue tracker.
 func SearchIssues(terms []string) (*IssuesSearchResult, error) {
     q := url.QueryEscape(strings.Join(terms, " "))
