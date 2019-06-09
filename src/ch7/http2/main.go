@@ -4,6 +4,7 @@ import(
 	"fmt"
 	"log"
 	"net/http"
+	"encoding/json"
 )
 
 func main(){
@@ -18,11 +19,13 @@ func (d dollars) String() string { return fmt.Sprintf("$%0.2f",d) }
 type database map[string]dollars
 
 func (db database)ServeHTTP(w http.ResponseWriter,req *http.Request){
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	switch req.URL.Path{
 	case "/list":
-		for item, price := range db {
-			fmt.Fprintf(w, "%s: %s\n", item, price)
-		}
+		json.NewEncoder(w).Encode(db)
+//		for item, price := range db {
+//			fmt.Fprintf(w, "%s: %s\n", item, price)
+//		}
 	case "/price":
 		item := req.URL.Query().Get("item")
 		price,ok :=  db[item]
